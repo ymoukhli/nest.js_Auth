@@ -23,4 +23,14 @@ export class UserService {
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find((user) => user.username === username);
   }
+
+  async addUser({ username, password }: User): Promise<User | undefined> {
+    if (!username || !password) throw new BadRequestException();
+    const oldUser = this.users.find((user) => user.username === username);
+    if (oldUser) return null;
+    else {
+      const id = this.users.length;
+      this.users.push({ id, username, password });
+    }
+  }
 }
